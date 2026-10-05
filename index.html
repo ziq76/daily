@@ -44,14 +44,52 @@
       </div>
     </div>
 
-    <!-- Panel Input Maklum Balas -->
+    <!-- Panel Input Refleksi -->
     <section class="bg-zinc-950 border border-zinc-900 rounded-2xl p-5 space-y-5">
       <div class="flex justify-between items-center border-b border-zinc-900 pb-2">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-300 mono">Refleksi Harian</h2>
+        <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-300 mono">Refleksi & Penjajaran Diri</h2>
         <span id="statusBadge" class="text-[10px] mono font-bold px-2 py-0.5 rounded bg-zinc-900 text-zinc-500 border border-zinc-800">BELUM SAH</span>
       </div>
 
-      <!-- Soalan 1: Happy -->
+      <!-- BAHAGIAN PALING ATAS: 3 IKRAR KETEGASAN MINDA -->
+      <div class="space-y-2.5 pb-2 border-b border-zinc-900">
+        <span class="text-[10px] mono uppercase text-emerald-500 font-bold tracking-wider block">PENEGASAN KAWALAN DIRI:</span>
+        
+        <!-- Ikrar 1 -->
+        <div class="flex items-center justify-between p-2.5 bg-black border border-zinc-800 rounded-xl gap-2">
+          <span class="text-xs text-zinc-200 leading-snug font-medium">PMO merosakkan otak dan aku berhenti selamanya</span>
+          <button type="button" id="btnAffirm1" onclick="toggleAffirm(1)" class="px-3.5 py-1.5 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold mono text-xs shrink-0">YA ✓</button>
+        </div>
+
+        <!-- Ikrar 2 -->
+        <div class="flex items-center justify-between p-2.5 bg-black border border-zinc-800 rounded-xl gap-2">
+          <span class="text-xs text-zinc-200 leading-snug font-medium">Berhenti PMO buka banyak laluan</span>
+          <button type="button" id="btnAffirm2" onclick="toggleAffirm(2)" class="px-3.5 py-1.5 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold mono text-xs shrink-0">YA ✓</button>
+        </div>
+
+        <!-- Ikrar 3 -->
+        <div class="flex items-center justify-between p-2.5 bg-black border border-zinc-800 rounded-xl gap-2">
+          <span class="text-xs text-zinc-200 leading-snug font-medium">Aku boleh sembuh secara berkala</span>
+          <button type="button" id="btnAffirm3" onclick="toggleAffirm(3)" class="px-3.5 py-1.5 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold mono text-xs shrink-0">YA ✓</button>
+        </div>
+      </div>
+
+      <!-- SKALA 1-5: SOALAN BAHARU (Rasa berkuasa tak harini) -->
+      <div class="space-y-2">
+        <div class="flex justify-between text-xs">
+          <span class="text-emerald-300 font-semibold">Rasa berkuasa tak harini?</span>
+          <span id="val_powerful" class="mono font-bold text-emerald-400">3</span>
+        </div>
+        <div class="grid grid-cols-5 gap-1.5 mono text-xs">
+          <button type="button" onclick="setScore('powerful', 1, this)" class="btn-powerful p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">1</button>
+          <button type="button" onclick="setScore('powerful', 2, this)" class="btn-powerful p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">2</button>
+          <button type="button" onclick="setScore('powerful', 3, this)" class="btn-powerful p-2 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">3</button>
+          <button type="button" onclick="setScore('powerful', 4, this)" class="btn-powerful p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">4</button>
+          <button type="button" onclick="setScore('powerful', 5, this)" class="btn-powerful p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">5</button>
+        </div>
+      </div>
+
+      <!-- Soalan Happy -->
       <div class="space-y-2">
         <div class="flex justify-between text-xs">
           <span class="text-zinc-300 font-medium">Adakah kau rasa happy harini?</span>
@@ -66,7 +104,7 @@
         </div>
       </div>
 
-      <!-- Soalan 2: Bersemangat -->
+      <!-- Soalan Bersemangat -->
       <div class="space-y-2">
         <div class="flex justify-between text-xs">
           <span class="text-zinc-300 font-medium">Rasa bersemangat?</span>
@@ -81,7 +119,7 @@
         </div>
       </div>
 
-      <!-- Soalan 3: Boleh Berehat -->
+      <!-- Soalan Boleh Berehat -->
       <div class="space-y-2">
         <div class="flex justify-between text-xs">
           <span class="text-zinc-300 font-medium">Boleh berehat harini?</span>
@@ -96,7 +134,7 @@
         </div>
       </div>
 
-      <!-- Soalan 4: Capai Ketenangan -->
+      <!-- Soalan Capai Ketenangan -->
       <div class="space-y-2">
         <div class="flex justify-between text-xs">
           <span class="text-zinc-300 font-medium">Capai ketenangan harini?</span>
@@ -111,7 +149,7 @@
         </div>
       </div>
 
-      <!-- Detachment: Status Pernafasan & Ruangan Isi Manual -->
+      <!-- DETACHMENT -->
       <div class="pt-3 border-t border-zinc-900 space-y-3">
         <div class="flex justify-between items-center text-xs">
           <span class="text-zinc-300 font-semibold uppercase tracking-wider mono text-[11px]">Detachment: Pernafasan Dah Buat?</span>
@@ -122,11 +160,10 @@
           <button type="button" id="btnBreathNo" onclick="setBreathing(false)" class="p-2.5 rounded-xl border border-zinc-800 bg-black text-zinc-500 font-bold">TIDAK</button>
         </div>
 
-        <!-- Ruangan Isi Manual Detachment -->
         <div class="space-y-1 pt-1">
           <label class="text-[11px] mono uppercase text-zinc-500">Catatan Detachment (Manual):</label>
           <textarea id="detachmentInput" rows="2" 
-            placeholder="Cth: Box breathing 5 minit, lepaskan overthinking pasal kerja, grounding sekejap..."
+            placeholder="Cth: Grounding diri, lepaskan ketegangan fikiran, tenang hadapi cabaran..."
             class="w-full bg-black border border-zinc-800 rounded-xl p-3 text-xs mono text-zinc-200 placeholder:text-zinc-700 focus:outline-none focus:border-zinc-500 resize-none"></textarea>
         </div>
       </div>
@@ -155,7 +192,8 @@
     const SUPABASE_KEY = "sb_publishable_5NR1DcL0YZ1Z5416-kX_2w_f8la6ycO";
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    let scores = { happy: 3, energy: 3, rest: 3, peace: 3 };
+    let affirms = { 1: true, 2: true, 3: true };
+    let scores = { powerful: 3, happy: 3, energy: 3, rest: 3, peace: 3 };
     let breathingDone = true;
 
     function getTodayString() {
@@ -168,6 +206,18 @@
 
     const todayStr = getTodayString();
     document.getElementById('todayDate').innerText = todayStr;
+
+    function toggleAffirm(idx) {
+      affirms[idx] = !affirms[idx];
+      const btn = document.getElementById(`btnAffirm${idx}`);
+      if (affirms[idx]) {
+        btn.innerText = "YA ✓";
+        btn.className = "px-3.5 py-1.5 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold mono text-xs shrink-0";
+      } else {
+        btn.innerText = "TIDAK";
+        btn.className = "px-3.5 py-1.5 rounded-lg border border-zinc-800 bg-black text-zinc-600 font-bold mono text-xs shrink-0";
+      }
+    }
 
     function setScore(key, val, el) {
       scores[key] = val;
@@ -261,7 +311,8 @@
               Pernafasan: ${l.breathing_done ? 'YA ✓' : 'TIDAK'}
             </span>
           </div>
-          <div class="grid grid-cols-4 gap-1 text-[11px] text-zinc-400 pt-0.5">
+          <div class="grid grid-cols-5 gap-1 text-[10px] text-zinc-400 pt-0.5">
+            <div>Power: <b class="text-white">${l.score_powerful || '-'}</b></div>
             <div>Happy: <b class="text-white">${l.score_happy}</b></div>
             <div>Energy: <b class="text-white">${l.score_energy}</b></div>
             <div>Rest: <b class="text-white">${l.score_rest}</b></div>
@@ -287,6 +338,10 @@
         .from('mental_alignment')
         .upsert({
           check_date: todayStr,
+          affirm_brain_damage: affirms[1],
+          affirm_open_paths: affirms[2],
+          affirm_healing: affirms[3],
+          score_powerful: scores.powerful,
           score_happy: scores.happy,
           score_energy: scores.energy,
           score_rest: scores.rest,
