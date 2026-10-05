@@ -1,1 +1,294 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Daily Alignment | Mindset Protocol</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Inter:wght@400;600;800;900&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-black text-zinc-100 min-h-screen flex flex-col items-center p-4 selection:bg-zinc-800">
 
+  <main class="w-full max-w-md my-4 space-y-5">
+    
+    <!-- Header -->
+    <header class="border-b border-zinc-900 pb-3 flex justify-between items-baseline">
+      <div>
+        <h1 class="text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-500 mono">ALIGNMENT PROTOCOL</h1>
+        <div class="text-xl font-extrabold tracking-tight text-white uppercase">DAILY CHECK-IN</div>
+      </div>
+      <div id="todayDate" class="mono text-xs text-zinc-500">Memuatkan...</div>
+    </header>
+
+    <!-- Scoreboard: Pengiraan Hari -->
+    <div class="grid grid-cols-2 gap-3">
+      <div class="bg-zinc-950 border border-zinc-900 rounded-2xl p-4">
+        <span class="text-[10px] mono uppercase text-zinc-500 block">Streak Berturut</span>
+        <div class="flex items-baseline gap-1 mt-1">
+          <span id="streakCount" class="text-4xl font-extrabold text-emerald-400 mono">0</span>
+          <span class="text-xs text-zinc-500">HARI</span>
+        </div>
+      </div>
+      <div class="bg-zinc-950 border border-zinc-900 rounded-2xl p-4">
+        <span class="text-[10px] mono uppercase text-zinc-500 block">Total Check-In</span>
+        <div class="flex items-baseline gap-1 mt-1">
+          <span id="totalCheckins" class="text-4xl font-extrabold text-zinc-100 mono">0</span>
+          <span class="text-xs text-zinc-500">HARI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel Input Maklum Balas -->
+    <section class="bg-zinc-950 border border-zinc-900 rounded-2xl p-5 space-y-5">
+      <div class="flex justify-between items-center border-b border-zinc-900 pb-2">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-300 mono">Refleksi Harian</h2>
+        <span id="statusBadge" class="text-[10px] mono font-bold px-2 py-0.5 rounded bg-zinc-900 text-zinc-500 border border-zinc-800">BELUM SAH</span>
+      </div>
+
+      <!-- Soalan 1: Happy -->
+      <div class="space-y-2">
+        <div class="flex justify-between text-xs">
+          <span class="text-zinc-300 font-medium">Adakah kau rasa happy harini?</span>
+          <span id="val_happy" class="mono font-bold text-emerald-400">3</span>
+        </div>
+        <div class="grid grid-cols-5 gap-1.5 mono text-xs">
+          <button type="button" onclick="setScore('happy', 1, this)" class="btn-happy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">1</button>
+          <button type="button" onclick="setScore('happy', 2, this)" class="btn-happy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">2</button>
+          <button type="button" onclick="setScore('happy', 3, this)" class="btn-happy p-2 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">3</button>
+          <button type="button" onclick="setScore('happy', 4, this)" class="btn-happy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">4</button>
+          <button type="button" onclick="setScore('happy', 5, this)" class="btn-happy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">5</button>
+        </div>
+      </div>
+
+      <!-- Soalan 2: Bersemangat -->
+      <div class="space-y-2">
+        <div class="flex justify-between text-xs">
+          <span class="text-zinc-300 font-medium">Rasa bersemangat?</span>
+          <span id="val_energy" class="mono font-bold text-emerald-400">3</span>
+        </div>
+        <div class="grid grid-cols-5 gap-1.5 mono text-xs">
+          <button type="button" onclick="setScore('energy', 1, this)" class="btn-energy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">1</button>
+          <button type="button" onclick="setScore('energy', 2, this)" class="btn-energy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">2</button>
+          <button type="button" onclick="setScore('energy', 3, this)" class="btn-energy p-2 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">3</button>
+          <button type="button" onclick="setScore('energy', 4, this)" class="btn-energy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">4</button>
+          <button type="button" onclick="setScore('energy', 5, this)" class="btn-energy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">5</button>
+        </div>
+      </div>
+
+      <!-- Soalan 3: Boleh Berehat -->
+      <div class="space-y-2">
+        <div class="flex justify-between text-xs">
+          <span class="text-zinc-300 font-medium">Boleh berehat harini?</span>
+          <span id="val_rest" class="mono font-bold text-emerald-400">3</span>
+        </div>
+        <div class="grid grid-cols-5 gap-1.5 mono text-xs">
+          <button type="button" onclick="setScore('rest', 1, this)" class="btn-rest p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">1</button>
+          <button type="button" onclick="setScore('rest', 2, this)" class="btn-rest p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">2</button>
+          <button type="button" onclick="setScore('rest', 3, this)" class="btn-rest p-2 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">3</button>
+          <button type="button" onclick="setScore('rest', 4, this)" class="btn-rest p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">4</button>
+          <button type="button" onclick="setScore('rest', 5, this)" class="btn-rest p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">5</button>
+        </div>
+      </div>
+
+      <!-- Soalan 4: Capai Ketenangan -->
+      <div class="space-y-2">
+        <div class="flex justify-between text-xs">
+          <span class="text-zinc-300 font-medium">Capai ketenangan harini?</span>
+          <span id="val_peace" class="mono font-bold text-emerald-400">3</span>
+        </div>
+        <div class="grid grid-cols-5 gap-1.5 mono text-xs">
+          <button type="button" onclick="setScore('peace', 1, this)" class="btn-peace p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">1</button>
+          <button type="button" onclick="setScore('peace', 2, this)" class="btn-peace p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">2</button>
+          <button type="button" onclick="setScore('peace', 3, this)" class="btn-peace p-2 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">3</button>
+          <button type="button" onclick="setScore('peace', 4, this)" class="btn-peace p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">4</button>
+          <button type="button" onclick="setScore('peace', 5, this)" class="btn-peace p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">5</button>
+        </div>
+      </div>
+
+      <!-- Detachment: Pernafasan (Ya / Tidak) -->
+      <div class="pt-2 border-t border-zinc-900 space-y-2">
+        <div class="flex justify-between items-center text-xs">
+          <span class="text-zinc-300 font-semibold uppercase tracking-wider mono text-[11px]">Detachment: Pernafasan Dah Buat?</span>
+          <span id="val_breathing" class="mono font-bold text-emerald-400">YA</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 mono text-xs">
+          <button type="button" id="btnBreathYes" onclick="setBreathing(true)" class="p-3 rounded-xl border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">YA (SELESAI)</button>
+          <button type="button" id="btnBreathNo" onclick="setBreathing(false)" class="p-3 rounded-xl border border-zinc-800 bg-black text-zinc-500 font-bold">TIDAK</button>
+        </div>
+      </div>
+
+      <button id="submitBtn" onclick="submitCheckin()"
+        class="w-full py-4 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] transition font-extrabold text-black rounded-xl text-xs uppercase tracking-widest mono shadow-lg shadow-emerald-950/40">
+        ✓ Sahkan Check-In Hari Ini
+      </button>
+    </section>
+
+    <!-- Sejarah Log -->
+    <section class="space-y-2">
+      <div class="flex justify-between items-center text-xs uppercase tracking-wider mono text-zinc-500">
+        <span>Log Rekod Penjajaran</span>
+        <button onclick="loadCheckinData()" class="hover:text-zinc-300">Sync 🔄</button>
+      </div>
+      <div id="checkinHistory" class="space-y-2 max-h-64 overflow-y-auto pr-1 text-xs mono">
+        <p class="text-zinc-700 text-center py-4">Memuat data...</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const SUPABASE_URL = "https://jrbbiqchqahyjhkxqmgr.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_5NR1DcL0YZ1Z5416-kX_2w_f8la6ycO";
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let scores = { happy: 3, energy: 3, rest: 3, peace: 3 };
+    let breathingDone = true;
+
+    function getTodayString() {
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    const todayStr = getTodayString();
+    document.getElementById('todayDate').innerText = todayStr;
+
+    function setScore(key, val, el) {
+      scores[key] = val;
+      document.getElementById(`val_${key}`).innerText = val;
+      document.querySelectorAll(`.btn-${key}`).forEach(b => {
+        b.className = `btn-${key} p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400`;
+      });
+      el.className = `btn-${key} p-2 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold`;
+    }
+
+    function setBreathing(status) {
+      breathingDone = status;
+      const bYes = document.getElementById('btnBreathYes');
+      const bNo = document.getElementById('btnBreathNo');
+      const lbl = document.getElementById('val_breathing');
+
+      if (status) {
+        lbl.innerText = "YA";
+        lbl.className = "mono font-bold text-emerald-400";
+        bYes.className = "p-3 rounded-xl border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold";
+        bNo.className = "p-3 rounded-xl border border-zinc-800 bg-black text-zinc-500 font-bold";
+      } else {
+        lbl.innerText = "TIDAK";
+        lbl.className = "mono font-bold text-rose-400";
+        bNo.className = "p-3 rounded-xl border border-rose-500 bg-zinc-900 text-rose-400 font-bold";
+        bYes.className = "p-3 rounded-xl border border-zinc-800 bg-black text-zinc-500 font-bold";
+      }
+    }
+
+    async function loadCheckinData() {
+      const { data, error } = await db
+        .from('mental_alignment')
+        .select('*')
+        .order('check_date', { ascending: false });
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      const logs = data || [];
+      document.getElementById('totalCheckins').innerText = logs.length;
+
+      const isTodayDone = logs.some(l => l.check_date === todayStr);
+      const badge = document.getElementById('statusBadge');
+      const btn = document.getElementById('submitBtn');
+
+      if (isTodayDone) {
+        badge.innerText = "SELESAI ✓";
+        badge.className = "text-[10px] mono font-bold px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-800";
+        btn.disabled = true;
+        btn.innerText = "Check-In Hari Ini Selesai ✓";
+        btn.className = "w-full py-4 bg-zinc-900 text-zinc-600 rounded-xl text-xs uppercase tracking-widest mono cursor-not-allowed";
+      } else {
+        badge.innerText = "BELUM SAH";
+        badge.className = "text-[10px] mono font-bold px-2 py-0.5 rounded bg-amber-950/60 text-amber-400 border border-amber-800";
+        btn.disabled = false;
+        btn.innerText = "✓ Sahkan Check-In Hari Ini";
+        btn.className = "w-full py-4 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] transition font-extrabold text-black rounded-xl text-xs uppercase tracking-widest mono shadow-lg shadow-emerald-950/40";
+      }
+
+      // Pengiraan Streak Hari
+      let streak = 0;
+      let check = new Date();
+      check.setHours(0,0,0,0);
+      if (!isTodayDone) check.setDate(check.getDate() - 1);
+
+      while(true) {
+        const dStr = `${check.getFullYear()}-${String(check.getMonth()+1).padStart(2,'0')}-${String(check.getDate()).padStart(2,'0')}`;
+        if (logs.find(l => l.check_date === dStr)) {
+          streak++;
+          check.setDate(check.getDate() - 1);
+        } else {
+          break;
+        }
+      }
+      document.getElementById('streakCount').innerText = streak;
+
+      // Papar Sejarah
+      const historyEl = document.getElementById('checkinHistory');
+      if (logs.length === 0) {
+        historyEl.innerHTML = `<p class="text-zinc-700 text-center py-4">Belum ada check-in direkodkan.</p>`;
+        return;
+      }
+
+      historyEl.innerHTML = logs.map(l => `
+        <div class="p-3 bg-zinc-950 border border-zinc-900 rounded-xl space-y-1.5">
+          <div class="flex justify-between items-baseline border-b border-zinc-900/60 pb-1">
+            <span class="text-zinc-300 font-bold">${l.check_date}</span>
+            <span class="text-[10px] ${l.breathing_done ? 'text-emerald-400' : 'text-zinc-600'}">
+              Pernafasan: ${l.breathing_done ? 'YA ✓' : 'TIDAK'}
+            </span>
+          </div>
+          <div class="grid grid-cols-4 gap-1 text-[11px] text-zinc-400 pt-0.5">
+            <div>Happy: <b class="text-white">${l.score_happy}</b></div>
+            <div>Energy: <b class="text-white">${l.score_energy}</b></div>
+            <div>Rest: <b class="text-white">${l.score_rest}</b></div>
+            <div>Peace: <b class="text-white">${l.score_peace}</b></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function submitCheckin() {
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerText = "Menyimpan...";
+
+      const { error } = await db
+        .from('mental_alignment')
+        .upsert({
+          check_date: todayStr,
+          score_happy: scores.happy,
+          score_energy: scores.energy,
+          score_rest: scores.rest,
+          score_peace: scores.peace,
+          breathing_done: breathingDone
+        }, { onConflict: 'check_date' });
+
+      if (error) {
+        alert("Ralat simpan: " + error.message);
+        btn.disabled = false;
+        btn.innerText = "✓ Sahkan Check-In Hari Ini";
+      } else {
+        await loadCheckinData();
+      }
+    }
+
+    loadCheckinData();
+  </script>
+</body>
+</html>
