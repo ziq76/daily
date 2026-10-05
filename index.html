@@ -111,15 +111,23 @@
         </div>
       </div>
 
-      <!-- Detachment: Pernafasan (Ya / Tidak) -->
-      <div class="pt-2 border-t border-zinc-900 space-y-2">
+      <!-- Detachment: Status Pernafasan & Ruangan Isi Manual -->
+      <div class="pt-3 border-t border-zinc-900 space-y-3">
         <div class="flex justify-between items-center text-xs">
           <span class="text-zinc-300 font-semibold uppercase tracking-wider mono text-[11px]">Detachment: Pernafasan Dah Buat?</span>
           <span id="val_breathing" class="mono font-bold text-emerald-400">YA</span>
         </div>
         <div class="grid grid-cols-2 gap-2 mono text-xs">
-          <button type="button" id="btnBreathYes" onclick="setBreathing(true)" class="p-3 rounded-xl border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">YA (SELESAI)</button>
-          <button type="button" id="btnBreathNo" onclick="setBreathing(false)" class="p-3 rounded-xl border border-zinc-800 bg-black text-zinc-500 font-bold">TIDAK</button>
+          <button type="button" id="btnBreathYes" onclick="setBreathing(true)" class="p-2.5 rounded-xl border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">YA (SELESAI)</button>
+          <button type="button" id="btnBreathNo" onclick="setBreathing(false)" class="p-2.5 rounded-xl border border-zinc-800 bg-black text-zinc-500 font-bold">TIDAK</button>
+        </div>
+
+        <!-- Ruangan Isi Manual Detachment -->
+        <div class="space-y-1 pt-1">
+          <label class="text-[11px] mono uppercase text-zinc-500">Catatan Detachment (Manual):</label>
+          <textarea id="detachmentInput" rows="2" 
+            placeholder="Cth: Box breathing 5 minit, lepaskan overthinking pasal kerja, grounding sekejap..."
+            class="w-full bg-black border border-zinc-800 rounded-xl p-3 text-xs mono text-zinc-200 placeholder:text-zinc-700 focus:outline-none focus:border-zinc-500 resize-none"></textarea>
         </div>
       </div>
 
@@ -179,13 +187,13 @@
       if (status) {
         lbl.innerText = "YA";
         lbl.className = "mono font-bold text-emerald-400";
-        bYes.className = "p-3 rounded-xl border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold";
-        bNo.className = "p-3 rounded-xl border border-zinc-800 bg-black text-zinc-500 font-bold";
+        bYes.className = "p-2.5 rounded-xl border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold";
+        bNo.className = "p-2.5 rounded-xl border border-zinc-800 bg-black text-zinc-500 font-bold";
       } else {
         lbl.innerText = "TIDAK";
         lbl.className = "mono font-bold text-rose-400";
-        bNo.className = "p-3 rounded-xl border border-rose-500 bg-zinc-900 text-rose-400 font-bold";
-        bYes.className = "p-3 rounded-xl border border-zinc-800 bg-black text-zinc-500 font-bold";
+        bNo.className = "p-2.5 rounded-xl border border-rose-500 bg-zinc-900 text-rose-400 font-bold";
+        bYes.className = "p-2.5 rounded-xl border border-zinc-800 bg-black text-zinc-500 font-bold";
       }
     }
 
@@ -221,7 +229,7 @@
         btn.className = "w-full py-4 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] transition font-extrabold text-black rounded-xl text-xs uppercase tracking-widest mono shadow-lg shadow-emerald-950/40";
       }
 
-      // Pengiraan Streak Hari
+      // Hitung streak hari berturut-turut
       let streak = 0;
       let check = new Date();
       check.setHours(0,0,0,0);
@@ -259,12 +267,19 @@
             <div>Rest: <b class="text-white">${l.score_rest}</b></div>
             <div>Peace: <b class="text-white">${l.score_peace}</b></div>
           </div>
+          ${l.detachment_notes ? `
+            <div class="text-[11px] text-zinc-400 pt-1 border-t border-zinc-900/40 italic">
+              "${l.detachment_notes}"
+            </div>
+          ` : ''}
         </div>
       `).join('');
     }
 
     async function submitCheckin() {
       const btn = document.getElementById('submitBtn');
+      const detachmentNotes = document.getElementById('detachmentInput').value.trim();
+
       btn.disabled = true;
       btn.innerText = "Menyimpan...";
 
@@ -276,7 +291,8 @@
           score_energy: scores.energy,
           score_rest: scores.rest,
           score_peace: scores.peace,
-          breathing_done: breathingDone
+          breathing_done: breathingDone,
+          detachment_notes: detachmentNotes || null
         }, { onConflict: 'check_date' });
 
       if (error) {
@@ -284,6 +300,7 @@
         btn.disabled = false;
         btn.innerText = "✓ Sahkan Check-In Hari Ini";
       } else {
+        document.getElementById('detachmentInput').value = "";
         await loadCheckinData();
       }
     }
