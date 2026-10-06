@@ -47,7 +47,7 @@
     <!-- Panel Input Refleksi -->
     <section class="bg-zinc-950 border border-zinc-900 rounded-2xl p-5 space-y-5">
       
-      <!-- Pilihan 4 Slot Waktu -->
+      <!-- Pilihan 4 Slot Waktu (Pagi 6, Tengah Hari 12, Petang 4, Malam 9) -->
       <div class="space-y-2">
         <div class="flex justify-between items-center">
           <span class="text-[10px] mono uppercase text-zinc-400 font-bold tracking-wider">PILIH SESI SEMASA:</span>
@@ -69,9 +69,360 @@
         </div>
       </div>
 
-      <!-- BAHAGIAN PALING ATAS: TICK PENEGASAN KAWALAN DIRI (TIADA PERKATAAN TIDAK) -->
+      <!-- BAHAGIAN PALING ATAS: KOTAK TICK PENEGASAN KAWALAN DIRI -->
       <div class="space-y-2.5 pb-2 border-b border-zinc-900">
         <span class="text-[10px] mono uppercase text-emerald-500 font-bold tracking-wider block">PENEGASAN KAWALAN DIRI:</span>
         
         <!-- Ikrar 1 -->
-        <div onclick="toggleAffirm(1)" class="flex items-center justify-between
+        <div onclick="toggleAffirm(1)" class="flex items-center justify-between p-3 bg-black border border-zinc-800 hover:border-zinc-700 active:scale-[0.99] transition rounded-xl cursor-pointer select-none gap-3">
+          <span class="text-xs text-zinc-200 leading-snug font-medium">PMO merosakkan otak dan aku berhenti selamanya</span>
+          <div id="btnAffirm1" class="flex items-center justify-center px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-600 font-bold mono text-xs shrink-0 transition">
+            [ &nbsp; ]
+          </div>
+        </div>
+
+        <!-- Ikrar 2 -->
+        <div onclick="toggleAffirm(2)" class="flex items-center justify-between p-3 bg-black border border-zinc-800 hover:border-zinc-700 active:scale-[0.99] transition rounded-xl cursor-pointer select-none gap-3">
+          <span class="text-xs text-zinc-200 leading-snug font-medium">Berhenti PMO buka banyak laluan</span>
+          <div id="btnAffirm2" class="flex items-center justify-center px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-600 font-bold mono text-xs shrink-0 transition">
+            [ &nbsp; ]
+          </div>
+        </div>
+
+        <!-- Ikrar 3 -->
+        <div onclick="toggleAffirm(3)" class="flex items-center justify-between p-3 bg-black border border-zinc-800 hover:border-zinc-700 active:scale-[0.99] transition rounded-xl cursor-pointer select-none gap-3">
+          <span class="text-xs text-zinc-200 leading-snug font-medium">Aku boleh sembuh secara berkala</span>
+          <div id="btnAffirm3" class="flex items-center justify-center px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-600 font-bold mono text-xs shrink-0 transition">
+            [ &nbsp; ]
+          </div>
+        </div>
+      </div>
+
+      <!-- SKALA 1-5: Rasa berkuasa -->
+      <div class="space-y-2">
+        <div class="flex justify-between text-xs">
+          <span class="text-emerald-300 font-semibold">Rasa berkuasa tak waktu ini?</span>
+          <span id="val_powerful" class="mono font-bold text-emerald-400">3</span>
+        </div>
+        <div class="grid grid-cols-5 gap-1.5 mono text-xs">
+          <button type="button" onclick="setScore('powerful', 1, this)" class="btn-powerful p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">1</button>
+          <button type="button" onclick="setScore('powerful', 2, this)" class="btn-powerful p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">2</button>
+          <button type="button" onclick="setScore('powerful', 3, this)" class="btn-powerful p-2 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">3</button>
+          <button type="button" onclick="setScore('powerful', 4, this)" class="btn-powerful p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">4</button>
+          <button type="button" onclick="setScore('powerful', 5, this)" class="btn-powerful p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">5</button>
+        </div>
+      </div>
+
+      <!-- Soalan Happy -->
+      <div class="space-y-2">
+        <div class="flex justify-between text-xs">
+          <span class="text-zinc-300 font-medium">Adakah kau rasa happy waktu ini?</span>
+          <span id="val_happy" class="mono font-bold text-emerald-400">3</span>
+        </div>
+        <div class="grid grid-cols-5 gap-1.5 mono text-xs">
+          <button type="button" onclick="setScore('happy', 1, this)" class="btn-happy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">1</button>
+          <button type="button" onclick="setScore('happy', 2, this)" class="btn-happy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">2</button>
+          <button type="button" onclick="setScore('happy', 3, this)" class="btn-happy p-2 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">3</button>
+          <button type="button" onclick="setScore('happy', 4, this)" class="btn-happy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">4</button>
+          <button type="button" onclick="setScore('happy', 5, this)" class="btn-happy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">5</button>
+        </div>
+      </div>
+
+      <!-- Soalan Bersemangat -->
+      <div class="space-y-2">
+        <div class="flex justify-between text-xs">
+          <span class="text-zinc-300 font-medium">Rasa bersemangat?</span>
+          <span id="val_energy" class="mono font-bold text-emerald-400">3</span>
+        </div>
+        <div class="grid grid-cols-5 gap-1.5 mono text-xs">
+          <button type="button" onclick="setScore('energy', 1, this)" class="btn-energy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">1</button>
+          <button type="button" onclick="setScore('energy', 2, this)" class="btn-energy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">2</button>
+          <button type="button" onclick="setScore('energy', 3, this)" class="btn-energy p-2 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">3</button>
+          <button type="button" onclick="setScore('energy', 4, this)" class="btn-energy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">4</button>
+          <button type="button" onclick="setScore('energy', 5, this)" class="btn-energy p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">5</button>
+        </div>
+      </div>
+
+      <!-- Soalan Boleh Berehat -->
+      <div class="space-y-2">
+        <div class="flex justify-between text-xs">
+          <span class="text-zinc-300 font-medium">Boleh berehat / tenang seketika?</span>
+          <span id="val_rest" class="mono font-bold text-emerald-400">3</span>
+        </div>
+        <div class="grid grid-cols-5 gap-1.5 mono text-xs">
+          <button type="button" onclick="setScore('rest', 1, this)" class="btn-rest p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">1</button>
+          <button type="button" onclick="setScore('rest', 2, this)" class="btn-rest p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">2</button>
+          <button type="button" onclick="setScore('rest', 3, this)" class="btn-rest p-2 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">3</button>
+          <button type="button" onclick="setScore('rest', 4, this)" class="btn-rest p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">4</button>
+          <button type="button" onclick="setScore('rest', 5, this)" class="btn-rest p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">5</button>
+        </div>
+      </div>
+
+      <!-- Soalan Capai Ketenangan -->
+      <div class="space-y-2">
+        <div class="flex justify-between text-xs">
+          <span class="text-zinc-300 font-medium">Capai ketenangan waktu ini?</span>
+          <span id="val_peace" class="mono font-bold text-emerald-400">3</span>
+        </div>
+        <div class="grid grid-cols-5 gap-1.5 mono text-xs">
+          <button type="button" onclick="setScore('peace', 1, this)" class="btn-peace p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">1</button>
+          <button type="button" onclick="setScore('peace', 2, this)" class="btn-peace p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">2</button>
+          <button type="button" onclick="setScore('peace', 3, this)" class="btn-peace p-2 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">3</button>
+          <button type="button" onclick="setScore('peace', 4, this)" class="btn-peace p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">4</button>
+          <button type="button" onclick="setScore('peace', 5, this)" class="btn-peace p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400">5</button>
+        </div>
+      </div>
+
+      <!-- DETACHMENT -->
+      <div class="pt-3 border-t border-zinc-900 space-y-3">
+        <div class="flex justify-between items-center text-xs">
+          <span class="text-zinc-300 font-semibold uppercase tracking-wider mono text-[11px]">Detachment: Pernafasan Dah Buat?</span>
+          <span id="val_breathing" class="mono font-bold text-emerald-400">YA</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 mono text-xs">
+          <button type="button" id="btnBreathYes" onclick="setBreathing(true)" class="p-2.5 rounded-xl border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold">YA (SELESAI)</button>
+          <button type="button" id="btnBreathNo" onclick="setBreathing(false)" class="p-2.5 rounded-xl border border-zinc-800 bg-black text-zinc-500 font-bold">TIDAK</button>
+        </div>
+
+        <div class="space-y-1 pt-1">
+          <label class="text-[11px] mono uppercase text-zinc-500">Catatan Detachment (Manual):</label>
+          <textarea id="detachmentInput" rows="2" 
+            placeholder="Cth: Lepaskan tekanan kerja, tenangkan fikiran, fokus balik..."
+            class="w-full bg-black border border-zinc-800 rounded-xl p-3 text-xs mono text-zinc-200 placeholder:text-zinc-700 focus:outline-none focus:border-zinc-500 resize-none"></textarea>
+        </div>
+      </div>
+
+      <button id="submitBtn" onclick="submitCheckin()"
+        class="w-full py-4 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] transition font-extrabold text-black rounded-xl text-xs uppercase tracking-widest mono shadow-lg shadow-emerald-950/40">
+        ✓ Sahkan Sesi Ini
+      </button>
+    </section>
+
+    <!-- Sejarah Log -->
+    <section class="space-y-2">
+      <div class="flex justify-between items-center text-xs uppercase tracking-wider mono text-zinc-500">
+        <span>Log Rekod Penjajaran</span>
+        <button onclick="loadCheckinData()" class="hover:text-zinc-300">Sync 🔄</button>
+      </div>
+      <div id="checkinHistory" class="space-y-2 max-h-72 overflow-y-auto pr-1 text-xs mono">
+        <p class="text-zinc-700 text-center py-4">Memuat data...</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const SUPABASE_URL = "https://jrbbiqchqahyjhkxqmgr.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_5NR1DcL0YZ1Z5416-kX_2w_f8la6ycO";
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let currentSlot = "Pagi (6 AM)";
+    let allLogs = [];
+    let affirms = { 1: false, 2: false, 3: false };
+    let scores = { powerful: 3, happy: 3, energy: 3, rest: 3, peace: 3 };
+    let breathingDone = true;
+
+    function getTodayString() {
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function getDefaultSlotByTime() {
+      const h = new Date().getHours();
+      if (h >= 5 && h < 11) return "Pagi (6 AM)";
+      if (h >= 11 && h < 15) return "Tengah Hari (12 PM)";
+      if (h >= 15 && h < 19) return "Petang (4 PM)";
+      return "Malam (9 PM)";
+    }
+
+    const todayStr = getTodayString();
+    document.getElementById('todayDate').innerText = todayStr;
+
+    function selectSlot(slot, el) {
+      currentSlot = slot;
+      document.querySelectorAll('.slot-btn').forEach(b => {
+        b.className = "slot-btn p-2.5 rounded-xl border border-zinc-800 bg-black text-zinc-400 font-bold text-center";
+      });
+      if (el) {
+        el.className = "slot-btn p-2.5 rounded-xl border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold text-center";
+      }
+      updateSlotStatusUI();
+    }
+
+    // Toggle Tick Minda (Tiada teks TIDAK, bertukar antara [ ] dan [ ✓ YA ])
+    function toggleAffirm(idx) {
+      affirms[idx] = !affirms[idx];
+      const el = document.getElementById(`btnAffirm${idx}`);
+      if (affirms[idx]) {
+        el.innerText = "YA ✓";
+        el.className = "flex items-center justify-center px-3 py-1.5 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold mono text-xs shrink-0 transition shadow-sm shadow-emerald-950";
+      } else {
+        el.innerText = "[   ]";
+        el.className = "flex items-center justify-center px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-600 font-bold mono text-xs shrink-0 transition";
+      }
+    }
+
+    function setScore(key, val, el) {
+      scores[key] = val;
+      document.getElementById(`val_${key}`).innerText = val;
+      document.querySelectorAll(`.btn-${key}`).forEach(b => {
+        b.className = `btn-${key} p-2 rounded-lg border border-zinc-800 bg-black text-zinc-400`;
+      });
+      el.className = `btn-${key} p-2 rounded-lg border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold`;
+    }
+
+    function setBreathing(status) {
+      breathingDone = status;
+      const bYes = document.getElementById('btnBreathYes');
+      const bNo = document.getElementById('btnBreathNo');
+      const lbl = document.getElementById('val_breathing');
+
+      if (status) {
+        lbl.innerText = "YA";
+        lbl.className = "mono font-bold text-emerald-400";
+        bYes.className = "p-2.5 rounded-xl border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold";
+        bNo.className = "p-2.5 rounded-xl border border-zinc-800 bg-black text-zinc-500 font-bold";
+      } else {
+        lbl.innerText = "TIDAK";
+        lbl.className = "mono font-bold text-rose-400";
+        bNo.className = "p-2.5 rounded-xl border border-rose-500 bg-zinc-900 text-rose-400 font-bold";
+        bYes.className = "p-2.5 rounded-xl border border-zinc-800 bg-black text-zinc-500 font-bold";
+      }
+    }
+
+    function updateSlotStatusUI() {
+      const isSlotDone = allLogs.some(l => l.check_date === todayStr && l.slot_time === currentSlot);
+      const badge = document.getElementById('statusBadge');
+      const btn = document.getElementById('submitBtn');
+
+      if (isSlotDone) {
+        badge.innerText = `${currentSlot} SELESAI ✓`;
+        badge.className = "text-[10px] mono font-bold px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-800";
+        btn.disabled = true;
+        btn.innerText = `Sesi ${currentSlot} Selesai ✓`;
+        btn.className = "w-full py-4 bg-zinc-900 text-zinc-600 rounded-xl text-xs uppercase tracking-widest mono cursor-not-allowed";
+      } else {
+        badge.innerText = `${currentSlot} BELUM SAH`;
+        badge.className = "text-[10px] mono font-bold px-2 py-0.5 rounded bg-amber-950/60 text-amber-400 border border-amber-800";
+        btn.disabled = false;
+        btn.innerText = `✓ Sahkan Sesi ${currentSlot}`;
+        btn.className = "w-full py-4 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] transition font-extrabold text-black rounded-xl text-xs uppercase tracking-widest mono shadow-lg shadow-emerald-950/40";
+      }
+    }
+
+    async function loadCheckinData() {
+      const { data, error } = await db
+        .from('mental_alignment')
+        .select('*')
+        .order('check_date', { ascending: false })
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      allLogs = data || [];
+      document.getElementById('totalCheckins').innerText = allLogs.length;
+
+      const uniqueDates = [...new Set(allLogs.map(l => l.check_date))];
+      let streak = 0;
+      let check = new Date();
+      check.setHours(0,0,0,0);
+      const isTodayAnyDone = uniqueDates.includes(todayStr);
+      if (!isTodayAnyDone) check.setDate(check.getDate() - 1);
+
+      while(true) {
+        const dStr = `${check.getFullYear()}-${String(check.getMonth()+1).padStart(2,'0')}-${String(check.getDate()).padStart(2,'0')}`;
+        if (uniqueDates.includes(dStr)) {
+          streak++;
+          check.setDate(check.getDate() - 1);
+        } else {
+          break;
+        }
+      }
+      document.getElementById('streakCount').innerText = streak;
+
+      updateSlotStatusUI();
+
+      const historyEl = document.getElementById('checkinHistory');
+      if (allLogs.length === 0) {
+        historyEl.innerHTML = `<p class="text-zinc-700 text-center py-4">Belum ada check-in direkodkan.</p>`;
+        return;
+      }
+
+      historyEl.innerHTML = allLogs.map(l => `
+        <div class="p-3 bg-zinc-950 border border-zinc-900 rounded-xl space-y-1.5">
+          <div class="flex justify-between items-baseline border-b border-zinc-900/60 pb-1">
+            <div>
+              <span class="text-zinc-200 font-bold text-xs">${l.check_date}</span>
+              <span class="text-[10px] text-emerald-400 ml-1 font-bold">[${l.slot_time || 'Sesi'}]</span>
+            </div>
+            <span class="text-[10px] ${l.breathing_done ? 'text-emerald-400' : 'text-zinc-600'}">
+              Nafas: ${l.breathing_done ? 'YA ✓' : 'TIDAK'}
+            </span>
+          </div>
+          <div class="grid grid-cols-5 gap-1 text-[10px] text-zinc-400 pt-0.5">
+            <div>Power: <b class="text-white">${l.score_powerful || '-'}</b></div>
+            <div>Happy: <b class="text-white">${l.score_happy}</b></div>
+            <div>Energy: <b class="text-white">${l.score_energy}</b></div>
+            <div>Rest: <b class="text-white">${l.score_rest}</b></div>
+            <div>Peace: <b class="text-white">${l.score_peace}</b></div>
+          </div>
+          ${l.detachment_notes ? `
+            <div class="text-[11px] text-zinc-400 pt-1 border-t border-zinc-900/40 italic">
+              "${l.detachment_notes}"
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    async function submitCheckin() {
+      const btn = document.getElementById('submitBtn');
+      const detachmentNotes = document.getElementById('detachmentInput').value.trim();
+
+      btn.disabled = true;
+      btn.innerText = "Menyimpan...";
+
+      const { error } = await db
+        .from('mental_alignment')
+        .upsert({
+          check_date: todayStr,
+          slot_time: currentSlot,
+          affirm_brain_damage: affirms[1],
+          affirm_open_paths: affirms[2],
+          affirm_healing: affirms[3],
+          score_powerful: scores.powerful,
+          score_happy: scores.happy,
+          score_energy: scores.energy,
+          score_rest: scores.rest,
+          score_peace: scores.peace,
+          breathing_done: breathingDone,
+          detachment_notes: detachmentNotes || null
+        }, { onConflict: 'check_date,slot_time' });
+
+      if (error) {
+        alert("Ralat simpan: " + error.message);
+        btn.disabled = false;
+        btn.innerText = `✓ Sahkan Sesi ${currentSlot}`;
+      } else {
+        document.getElementById('detachmentInput').value = "";
+        await loadCheckinData();
+      }
+    }
+
+    const initialSlot = getDefaultSlotByTime();
+    document.querySelectorAll('.slot-btn').forEach(btn => {
+      if (btn.innerText.includes(initialSlot.split(' ')[0])) {
+        selectSlot(initialSlot, btn);
+      }
+    });
+
+    loadCheckinData();
+  </script>
+</body>
+</html>
