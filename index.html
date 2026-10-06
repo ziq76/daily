@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Daily Alignment | Mindset Protocol</title>
+  <title>Daily Alignment | 4x Protocol</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -21,34 +21,52 @@
     <header class="border-b border-zinc-900 pb-3 flex justify-between items-baseline">
       <div>
         <h1 class="text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-500 mono">ALIGNMENT PROTOCOL</h1>
-        <div class="text-xl font-extrabold tracking-tight text-white uppercase">DAILY CHECK-IN</div>
+        <div class="text-xl font-extrabold tracking-tight text-white uppercase">DAILY CHECK-IN (4X)</div>
       </div>
       <div id="todayDate" class="mono text-xs text-zinc-500">Memuatkan...</div>
     </header>
 
-    <!-- Scoreboard: Pengiraan Hari -->
+    <!-- Scoreboard: Pengiraan Hari & Sesi -->
     <div class="grid grid-cols-2 gap-3">
       <div class="bg-zinc-950 border border-zinc-900 rounded-2xl p-4">
-        <span class="text-[10px] mono uppercase text-zinc-500 block">Streak Berturut</span>
+        <span class="text-[10px] mono uppercase text-zinc-500 block">Streak Hari Berturut</span>
         <div class="flex items-baseline gap-1 mt-1">
           <span id="streakCount" class="text-4xl font-extrabold text-emerald-400 mono">0</span>
           <span class="text-xs text-zinc-500">HARI</span>
         </div>
       </div>
       <div class="bg-zinc-950 border border-zinc-900 rounded-2xl p-4">
-        <span class="text-[10px] mono uppercase text-zinc-500 block">Total Check-In</span>
+        <span class="text-[10px] mono uppercase text-zinc-500 block">Total Check-In Sesi</span>
         <div class="flex items-baseline gap-1 mt-1">
           <span id="totalCheckins" class="text-4xl font-extrabold text-zinc-100 mono">0</span>
-          <span class="text-xs text-zinc-500">HARI</span>
+          <span class="text-xs text-zinc-500">SESI</span>
         </div>
       </div>
     </div>
 
     <!-- Panel Input Refleksi -->
     <section class="bg-zinc-950 border border-zinc-900 rounded-2xl p-5 space-y-5">
-      <div class="flex justify-between items-center border-b border-zinc-900 pb-2">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-300 mono">Refleksi & Penjajaran Diri</h2>
-        <span id="statusBadge" class="text-[10px] mono font-bold px-2 py-0.5 rounded bg-zinc-900 text-zinc-500 border border-zinc-800">BELUM SAH</span>
+      
+      <!-- Pilihan 4 Slot Waktu (Pagi 6, Tengah Hari 12, Petang 4, Malam 9) -->
+      <div class="space-y-2">
+        <div class="flex justify-between items-center">
+          <span class="text-[10px] mono uppercase text-zinc-400 font-bold tracking-wider">PILIH SESI SEMASA:</span>
+          <span id="statusBadge" class="text-[10px] mono font-bold px-2 py-0.5 rounded bg-zinc-900 text-zinc-500 border border-zinc-800">BELUM SAH</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 mono text-xs">
+          <button type="button" onclick="selectSlot('Pagi (6 AM)', this)" class="slot-btn p-2.5 rounded-xl border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold text-center">
+            Pagi (6 AM)
+          </button>
+          <button type="button" onclick="selectSlot('Tengah Hari (12 PM)', this)" class="slot-btn p-2.5 rounded-xl border border-zinc-800 bg-black text-zinc-400 font-bold text-center">
+            Tgh Hari (12 PM)
+          </button>
+          <button type="button" onclick="selectSlot('Petang (4 PM)', this)" class="slot-btn p-2.5 rounded-xl border border-zinc-800 bg-black text-zinc-400 font-bold text-center">
+            Petang (4 PM)
+          </button>
+          <button type="button" onclick="selectSlot('Malam (9 PM)', this)" class="slot-btn p-2.5 rounded-xl border border-zinc-800 bg-black text-zinc-400 font-bold text-center">
+            Malam (9 PM)
+          </button>
+        </div>
       </div>
 
       <!-- BAHAGIAN PALING ATAS: 3 IKRAR KETEGASAN MINDA -->
@@ -74,10 +92,10 @@
         </div>
       </div>
 
-      <!-- SKALA 1-5: SOALAN BAHARU (Rasa berkuasa tak harini) -->
+      <!-- SKALA 1-5: Rasa berkuasa -->
       <div class="space-y-2">
         <div class="flex justify-between text-xs">
-          <span class="text-emerald-300 font-semibold">Rasa berkuasa tak harini?</span>
+          <span class="text-emerald-300 font-semibold">Rasa berkuasa tak waktu ini?</span>
           <span id="val_powerful" class="mono font-bold text-emerald-400">3</span>
         </div>
         <div class="grid grid-cols-5 gap-1.5 mono text-xs">
@@ -92,7 +110,7 @@
       <!-- Soalan Happy -->
       <div class="space-y-2">
         <div class="flex justify-between text-xs">
-          <span class="text-zinc-300 font-medium">Adakah kau rasa happy harini?</span>
+          <span class="text-zinc-300 font-medium">Adakah kau rasa happy waktu ini?</span>
           <span id="val_happy" class="mono font-bold text-emerald-400">3</span>
         </div>
         <div class="grid grid-cols-5 gap-1.5 mono text-xs">
@@ -122,7 +140,7 @@
       <!-- Soalan Boleh Berehat -->
       <div class="space-y-2">
         <div class="flex justify-between text-xs">
-          <span class="text-zinc-300 font-medium">Boleh berehat harini?</span>
+          <span class="text-zinc-300 font-medium">Boleh berehat / tenang seketika?</span>
           <span id="val_rest" class="mono font-bold text-emerald-400">3</span>
         </div>
         <div class="grid grid-cols-5 gap-1.5 mono text-xs">
@@ -137,7 +155,7 @@
       <!-- Soalan Capai Ketenangan -->
       <div class="space-y-2">
         <div class="flex justify-between text-xs">
-          <span class="text-zinc-300 font-medium">Capai ketenangan harini?</span>
+          <span class="text-zinc-300 font-medium">Capai ketenangan waktu ini?</span>
           <span id="val_peace" class="mono font-bold text-emerald-400">3</span>
         </div>
         <div class="grid grid-cols-5 gap-1.5 mono text-xs">
@@ -163,14 +181,14 @@
         <div class="space-y-1 pt-1">
           <label class="text-[11px] mono uppercase text-zinc-500">Catatan Detachment (Manual):</label>
           <textarea id="detachmentInput" rows="2" 
-            placeholder="Cth: Grounding diri, lepaskan ketegangan fikiran, tenang hadapi cabaran..."
+            placeholder="Cth: Lepaskan tekanan kerja, tenangkan fikiran, fokus balik..."
             class="w-full bg-black border border-zinc-800 rounded-xl p-3 text-xs mono text-zinc-200 placeholder:text-zinc-700 focus:outline-none focus:border-zinc-500 resize-none"></textarea>
         </div>
       </div>
 
       <button id="submitBtn" onclick="submitCheckin()"
         class="w-full py-4 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] transition font-extrabold text-black rounded-xl text-xs uppercase tracking-widest mono shadow-lg shadow-emerald-950/40">
-        ✓ Sahkan Check-In Hari Ini
+        ✓ Sahkan Sesi Ini
       </button>
     </section>
 
@@ -180,7 +198,7 @@
         <span>Log Rekod Penjajaran</span>
         <button onclick="loadCheckinData()" class="hover:text-zinc-300">Sync 🔄</button>
       </div>
-      <div id="checkinHistory" class="space-y-2 max-h-64 overflow-y-auto pr-1 text-xs mono">
+      <div id="checkinHistory" class="space-y-2 max-h-72 overflow-y-auto pr-1 text-xs mono">
         <p class="text-zinc-700 text-center py-4">Memuat data...</p>
       </div>
     </section>
@@ -192,6 +210,8 @@
     const SUPABASE_KEY = "sb_publishable_5NR1DcL0YZ1Z5416-kX_2w_f8la6ycO";
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    let currentSlot = "Pagi (6 AM)";
+    let allLogs = [];
     let affirms = { 1: true, 2: true, 3: true };
     let scores = { powerful: 3, happy: 3, energy: 3, rest: 3, peace: 3 };
     let breathingDone = true;
@@ -204,8 +224,28 @@
       return `${yyyy}-${mm}-${dd}`;
     }
 
+    // Auto-pilih slot berdasarkan jam terkini
+    function getDefaultSlotByTime() {
+      const h = new Date().getHours();
+      if (h >= 5 && h < 11) return "Pagi (6 AM)";
+      if (h >= 11 && h < 15) return "Tengah Hari (12 PM)";
+      if (h >= 15 && h < 19) return "Petang (4 PM)";
+      return "Malam (9 PM)";
+    }
+
     const todayStr = getTodayString();
     document.getElementById('todayDate').innerText = todayStr;
+
+    function selectSlot(slot, el) {
+      currentSlot = slot;
+      document.querySelectorAll('.slot-btn').forEach(b => {
+        b.className = "slot-btn p-2.5 rounded-xl border border-zinc-800 bg-black text-zinc-400 font-bold text-center";
+      });
+      if (el) {
+        el.className = "slot-btn p-2.5 rounded-xl border border-emerald-500 bg-zinc-900 text-emerald-400 font-bold text-center";
+      }
+      updateSlotStatusUI();
+    }
 
     function toggleAffirm(idx) {
       affirms[idx] = !affirms[idx];
@@ -247,47 +287,52 @@
       }
     }
 
+    function updateSlotStatusUI() {
+      const isSlotDone = allLogs.some(l => l.check_date === todayStr && l.slot_time === currentSlot);
+      const badge = document.getElementById('statusBadge');
+      const btn = document.getElementById('submitBtn');
+
+      if (isSlotDone) {
+        badge.innerText = `${currentSlot} SELESAI ✓`;
+        badge.className = "text-[10px] mono font-bold px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-800";
+        btn.disabled = true;
+        btn.innerText = `Sesi ${currentSlot} Selesai ✓`;
+        btn.className = "w-full py-4 bg-zinc-900 text-zinc-600 rounded-xl text-xs uppercase tracking-widest mono cursor-not-allowed";
+      } else {
+        badge.innerText = `${currentSlot} BELUM SAH`;
+        badge.className = "text-[10px] mono font-bold px-2 py-0.5 rounded bg-amber-950/60 text-amber-400 border border-amber-800";
+        btn.disabled = false;
+        btn.innerText = `✓ Sahkan Sesi ${currentSlot}`;
+        btn.className = "w-full py-4 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] transition font-extrabold text-black rounded-xl text-xs uppercase tracking-widest mono shadow-lg shadow-emerald-950/40";
+      }
+    }
+
     async function loadCheckinData() {
       const { data, error } = await db
         .from('mental_alignment')
         .select('*')
-        .order('check_date', { ascending: false });
+        .order('check_date', { ascending: false })
+        .order('created_at', { ascending: false });
 
       if (error) {
         console.error(error);
         return;
       }
 
-      const logs = data || [];
-      document.getElementById('totalCheckins').innerText = logs.length;
+      allLogs = data || [];
+      document.getElementById('totalCheckins').innerText = allLogs.length;
 
-      const isTodayDone = logs.some(l => l.check_date === todayStr);
-      const badge = document.getElementById('statusBadge');
-      const btn = document.getElementById('submitBtn');
-
-      if (isTodayDone) {
-        badge.innerText = "SELESAI ✓";
-        badge.className = "text-[10px] mono font-bold px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-800";
-        btn.disabled = true;
-        btn.innerText = "Check-In Hari Ini Selesai ✓";
-        btn.className = "w-full py-4 bg-zinc-900 text-zinc-600 rounded-xl text-xs uppercase tracking-widest mono cursor-not-allowed";
-      } else {
-        badge.innerText = "BELUM SAH";
-        badge.className = "text-[10px] mono font-bold px-2 py-0.5 rounded bg-amber-950/60 text-amber-400 border border-amber-800";
-        btn.disabled = false;
-        btn.innerText = "✓ Sahkan Check-In Hari Ini";
-        btn.className = "w-full py-4 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] transition font-extrabold text-black rounded-xl text-xs uppercase tracking-widest mono shadow-lg shadow-emerald-950/40";
-      }
-
-      // Hitung streak hari berturut-turut
+      // Hitung streak hari unik berturut-turut
+      const uniqueDates = [...new Set(allLogs.map(l => l.check_date))];
       let streak = 0;
       let check = new Date();
       check.setHours(0,0,0,0);
-      if (!isTodayDone) check.setDate(check.getDate() - 1);
+      const isTodayAnyDone = uniqueDates.includes(todayStr);
+      if (!isTodayAnyDone) check.setDate(check.getDate() - 1);
 
       while(true) {
         const dStr = `${check.getFullYear()}-${String(check.getMonth()+1).padStart(2,'0')}-${String(check.getDate()).padStart(2,'0')}`;
-        if (logs.find(l => l.check_date === dStr)) {
+        if (uniqueDates.includes(dStr)) {
           streak++;
           check.setDate(check.getDate() - 1);
         } else {
@@ -296,19 +341,24 @@
       }
       document.getElementById('streakCount').innerText = streak;
 
-      // Papar Sejarah
+      updateSlotStatusUI();
+
+      // Papar Sejarah Sesi
       const historyEl = document.getElementById('checkinHistory');
-      if (logs.length === 0) {
+      if (allLogs.length === 0) {
         historyEl.innerHTML = `<p class="text-zinc-700 text-center py-4">Belum ada check-in direkodkan.</p>`;
         return;
       }
 
-      historyEl.innerHTML = logs.map(l => `
+      historyEl.innerHTML = allLogs.map(l => `
         <div class="p-3 bg-zinc-950 border border-zinc-900 rounded-xl space-y-1.5">
           <div class="flex justify-between items-baseline border-b border-zinc-900/60 pb-1">
-            <span class="text-zinc-300 font-bold">${l.check_date}</span>
+            <div>
+              <span class="text-zinc-200 font-bold text-xs">${l.check_date}</span>
+              <span class="text-[10px] text-emerald-400 ml-1 font-bold">[${l.slot_time || 'Sesi'}]</span>
+            </div>
             <span class="text-[10px] ${l.breathing_done ? 'text-emerald-400' : 'text-zinc-600'}">
-              Pernafasan: ${l.breathing_done ? 'YA ✓' : 'TIDAK'}
+              Nafas: ${l.breathing_done ? 'YA ✓' : 'TIDAK'}
             </span>
           </div>
           <div class="grid grid-cols-5 gap-1 text-[10px] text-zinc-400 pt-0.5">
@@ -338,6 +388,7 @@
         .from('mental_alignment')
         .upsert({
           check_date: todayStr,
+          slot_time: currentSlot,
           affirm_brain_damage: affirms[1],
           affirm_open_paths: affirms[2],
           affirm_healing: affirms[3],
@@ -348,17 +399,25 @@
           score_peace: scores.peace,
           breathing_done: breathingDone,
           detachment_notes: detachmentNotes || null
-        }, { onConflict: 'check_date' });
+        }, { onConflict: 'check_date,slot_time' });
 
       if (error) {
         alert("Ralat simpan: " + error.message);
         btn.disabled = false;
-        btn.innerText = "✓ Sahkan Check-In Hari Ini";
+        btn.innerText = `✓ Sahkan Sesi ${currentSlot}`;
       } else {
         document.getElementById('detachmentInput').value = "";
         await loadCheckinData();
       }
     }
+
+    // Set slot permulaan ikut jam semasa
+    const initialSlot = getDefaultSlotByTime();
+    document.querySelectorAll('.slot-btn').forEach(btn => {
+      if (btn.innerText.includes(initialSlot.split(' ')[0])) {
+        selectSlot(initialSlot, btn);
+      }
+    });
 
     loadCheckinData();
   </script>
